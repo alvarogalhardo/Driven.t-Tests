@@ -7,7 +7,7 @@ async function getAllHotels() {
 async function getHotelById(id: number) {
   return await prisma.hotel.findUnique({
     where: {
-      id,
+      id:id
     },
     include: {
       Rooms: {

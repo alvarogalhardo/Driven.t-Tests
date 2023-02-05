@@ -1,7 +1,6 @@
 import { notFoundError } from '@/errors';
 import { Hotel, Room, Booking } from '@prisma/client';
 import hotelRepository from '@/repositories/hotels-repository';
-import enrollmentRepository from '@/repositories/enrollment-repository';
 
 async function getHotels() {
   const data: Hotel[] = await hotelRepository.getAllHotels();
@@ -17,13 +16,9 @@ async function validateHotels(userId: number) {
   const enrollment = await hotelRepository.checkEnrollment(userId);
   if (!enrollment) throw notFoundError();
   const ticket = await hotelRepository.checkTicket(enrollment.id);
-  console.log(ticket,'ticket');
-  
   if (ticket.status !== 'PAID') return false;
-  const ticketType = await hotelRepository.checkTicketType(ticket.ticketTypeId);
-  console.log(ticketType,'TT');
-  
-  if (!ticketType.includesHotel || ticketType.isRemote) return false;
+  const ticketType = await hotelRepository.checkTicketType(ticket.ticketTypeId);  
+  if (ticketType.isRemote || !ticketType.includesHotel) return false;
   return true;
 }
 

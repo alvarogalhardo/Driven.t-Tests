@@ -20,53 +20,32 @@ export async function createHotels() {
   });
 }
 
-export async function createRooms() {
+export async function createHotel() {
+  return prisma.hotel.create({
+    data: {
+      name: faker.company.companyName(),
+      image: faker.image.imageUrl(),
+    },
+  });
+}
+
+export async function createRooms(hotelId: number) {
   return prisma.room.createMany({
     data: [
       {
-        hotelId: 1,
-        name: faker.lorem.word(2),
+        hotelId,
+        name: faker.lorem.word(6),
         capacity: 1,
       },
       {
-        hotelId: 1,
-        name: faker.lorem.word(2),
-        capacity: 1,
+        hotelId,
+        name: faker.lorem.word(6),
+        capacity: 2,
       },
       {
-        hotelId: 1,
-        name: faker.lorem.word(2),
-        capacity: 1,
-      },
-      {
-        hotelId: 2,
-        name: faker.lorem.word(2),
-        capacity: 1,
-      },
-      {
-        hotelId: 2,
-        name: faker.lorem.word(2),
-        capacity: 1,
-      },
-      {
-        hotelId: 2,
-        name: faker.lorem.word(2),
-        capacity: 1,
-      },
-      {
-        hotelId: 3,
-        name: faker.lorem.word(2),
-        capacity: 1,
-      },
-      {
-        hotelId: 3,
-        name: faker.lorem.word(2),
-        capacity: 1,
-      },
-      {
-        hotelId: 3,
-        name: faker.lorem.word(2),
-        capacity: 1,
+        hotelId,
+        name: faker.lorem.word(6),
+        capacity: 3,
       },
     ],
   });

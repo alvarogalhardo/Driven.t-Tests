@@ -7,10 +7,8 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
   const userId = req.userId;
   try {
     const valid = await hotelsService.validateHotels(userId);
-    console.log(valid)
     if (!valid) return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
-    const hotels = await hotelsService.getHotels();
-    if (hotels.length === 0) return res.sendStatus(httpStatus.NO_CONTENT);
+    const hotels = await hotelsService.getHotels();    
     return res.status(200).send(hotels);
   } catch (err) {
     console.error(err);
@@ -19,12 +17,12 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
 }
 
 export async function getHotelById(req: AuthenticatedRequest, res: Response) {
-  const { id } = req.params;
+  const { hotelId } = req.params;
   const userId = req.userId;
   try {
     const valid = await hotelsService.validateHotels(userId);
     if (!valid) return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
-    const hotel = await hotelsService.getHotel(Number(id));
+    const hotel = await hotelsService.getHotel(parseInt(hotelId));
     if (!hotel) return res.sendStatus(httpStatus.NOT_FOUND);
     return res.status(200).send(hotel);
   } catch (err) {
