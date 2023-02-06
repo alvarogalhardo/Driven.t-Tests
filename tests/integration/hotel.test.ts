@@ -94,6 +94,17 @@ describe('GET /hotels', () => {
       await createTicket(enrollment.id, ticketType.id, 'PAID');
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            image: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          }),
+        ]),
+      );
     });
   });
 });
@@ -173,6 +184,24 @@ describe("GET '/hotels/:hotelId", () => {
       await createTicket(enrollment.id, ticketType.id, 'PAID');
       const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          id: expect.any(Number),
+          name: expect.any(String),
+          image: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          Rooms: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(Number),
+              name: expect.any(String),
+              capacity: expect.any(Number),
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            }),
+          ]),
+        }),
+      );
     });
   });
 });
